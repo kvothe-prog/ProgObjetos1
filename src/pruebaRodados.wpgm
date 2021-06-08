@@ -8,7 +8,7 @@ import rodados.*
  * A,S y D para elegir el color del auto activo
  * 1,2 y 3 para cambiar de auto activo (Al cambiar el que estabas usando queda estacionado.)
  * F para cambiar de modo normal a modo todos se mueven y viceversa.
- * Pude implementar lo de la pared pero solo con una.
+ * Pude implementar lo de la pared pero solo con un auto.
  */
 
 program corsasEnElGame {
