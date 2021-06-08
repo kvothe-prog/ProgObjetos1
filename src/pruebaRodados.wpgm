@@ -1,0 +1,63 @@
+import wollok.game.*
+import rodados.*
+
+/*
+ * Hice hasta acá
+ * Los controles del juego son:
+ * Flechitas para moverse
+ * A,S y D para elegir el color del auto activo
+ * 1,2 y 3 para cambiar de auto activo (Al cambiar el que estabas usando queda estacionado.)
+ * F para cambiar de modo normal a modo todos se mueven y viceversa.
+ * Pude implementar lo de la pared pero solo con una.
+ */
+
+program corsasEnElGame {
+	
+	var corsita1 = new Corsa()
+	var corsita2 = new Corsa()
+	var corsita3 = new Corsa()
+	var corsitaActivo = corsita1
+	var modo = "normal"
+	var listaCorsitas = [corsita1, corsita2, corsita3]
+	var pared1 = new Pared()
+	
+	game.title("Corsa game")
+	
+	game.height(16)
+	game.width(16)
+	game.ground("fondo.png")
+	game.addVisual(corsitaActivo)
+	game.addVisualIn( pared1, game.at(5,5))
+	game.whenCollideDo(corsitaActivo, { pared => if(pared.resistencia() > 0){pared.autoChoco()} else{ game.removeVisual(pared) }})
+	game.whenCollideDo( pared1 , { corsita => corsita.position(corsita.anteriorPosicion().first(), corsita.anteriorPosicion().last()) } )
+	
+	keyboard.right().onPressDo{ if(modo == "normal") {corsitaActivo.moveteDerecha()} else { listaCorsitas.forEach({ c => c.moveteDerecha()})}}
+	keyboard.left().onPressDo{ if(modo == "normal") {corsitaActivo.moveteIzquierda()} else { listaCorsitas.forEach({ c => c.moveteIzquierda()})}}
+	keyboard.up().onPressDo{ if(modo == "normal") {corsitaActivo.moveteArriba()} else { listaCorsitas.forEach({ c => c.moveteArriba()})}}
+	keyboard.down().onPressDo{ if(modo == "normal") {corsitaActivo.moveteAbajo()} else { listaCorsitas.forEach({ c => c.moveteAbajo()})}}
+	keyboard.a().onPressDo{ corsitaActivo.cambiaAmarillo() }
+	keyboard.s().onPressDo{ corsitaActivo.cambiaVerde() }
+	keyboard.d().onPressDo{ corsitaActivo.cambiaRojo() }
+	keyboard.num1().onPressDo{ 
+		corsitaActivo = corsita1
+		game.addVisual(corsitaActivo)
+	}
+	keyboard.num2().onPressDo{ 
+		corsitaActivo = corsita2
+		game.addVisual(corsitaActivo)
+	}
+	keyboard.num3().onPressDo{ 
+		corsitaActivo = corsita3
+		game.addVisual(corsitaActivo)
+	}
+	keyboard.f().onPressDo{
+		if(modo =="normal"){
+			modo = "todos"
+		}
+		else{
+			modo="normal"
+		}
+	}	
+	
+	game.start()
+}
